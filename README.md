@@ -170,17 +170,20 @@ response. No other code assumes a backend.
 
 ### GitHub Pages
 
-`.github/workflows/deploy.yml` builds the site and publishes `dist/` on every
-push to `main` (or manually via *Actions → Deploy to GitHub Pages → Run workflow*).
+This repo is published straight from the `main` branch root — no CI or build
+step required, because the root is already a static site.
 
-1. Push the repo to GitHub.
-2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
-3. Push to `main`. The workflow runs `npm ci`, `npm run build`, and deploys.
+- **Settings → Pages → Build and deployment**
+- **Source:** Deploy from a branch
+- **Branch:** `main` · folder `/ (root)`
 
-`vite.config.js` sets `base: './'`, so the build works from a project
-subdirectory (`https://user.github.io/repo/`) as well as a domain root. The
-`fonts/` and `media/` folders and `favicon.svg` are copied into `dist/` by a
-small `closeBundle` plugin.
+The site is live at `https://<user>.github.io/window/`.
+
+All asset paths are relative (`./src/…`, `./media/…`), so subdirectory hosting
+works without any config. If you'd rather publish the minified `dist/` output,
+run `npm run build` and point Pages at a `gh-pages` branch — or add a GitHub
+Actions workflow using `actions/upload-pages-artifact` (note: pushing workflow
+files requires the `workflow` scope on your GitHub CLI/token).
 
 ### Any other static host
 
